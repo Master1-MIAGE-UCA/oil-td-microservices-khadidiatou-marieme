@@ -45,7 +45,7 @@ Ce projet contient trois services :
 - *Logs* :
     - Les logs afficheront des informations sur l'enregistrement des services auprès du registre.
 
-### Ordre de demarrage des services : 
+## Ordre de demarrage des services : 
 
 1. Demarrer le Discovery Service 
 2. Demarrer le Dice Service 
