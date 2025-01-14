@@ -16,7 +16,7 @@ public class DiscoveryController {
     private final Map<String, ServiceInfo> services = new ConcurrentHashMap<>();
 
     // Classe interne pour contenir les informations d'un service
-    private static class ServiceInfo {
+     static class ServiceInfo {
         String url;
         LocalDateTime lastRegisteredTime;
 
