@@ -14,22 +14,22 @@ import java.util.Map;
 @RestController
 @RequestMapping("/player")
 public class PlayerController {
-    DiceClient diceClient ;
+    private final DiceClient diceClient;
+    private final RestTemplate restTemplate;
 
     @Autowired
-    public PlayerController(DiceClient diceClient) {
+    public PlayerController(DiceClient diceClient, RestTemplate restTemplate) {
         this.diceClient = diceClient;
+        this.restTemplate = restTemplate;
     }
 
     @GetMapping("/rollDice")
     public List<Integer> rollDice() {
         return diceClient.rollDice();
-
     }
 
     @PostConstruct
     public void registerWithDiscovery() {
-        RestTemplate restTemplate = new RestTemplate();
         Map<String, String> serviceInfo = new HashMap<>();
         serviceInfo.put("name", "player");
         serviceInfo.put("url", "http://localhost:8082");
@@ -42,4 +42,3 @@ public class PlayerController {
         }
     }
 }
-

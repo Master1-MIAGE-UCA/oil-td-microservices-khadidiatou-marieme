@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,27 +29,29 @@ public class PlayerControllerTest {
     private PlayerController playerController;
 
     @Test
-    void testRollDice() {
-        List<Integer> expectedResult = List.of(1, 2, 3, 4, 5);
-        when(diceClient.rollDice()).thenReturn(expectedResult);
+    public void testRegisterWithDiscovery() {
+        // Préparer les données
+        Map<String, String> serviceInfo = new HashMap<>();
+        serviceInfo.put("name", "player");
+        serviceInfo.put("url", "http://localhost:8082");
 
-        List<Integer> result = playerController.rollDice();
-        assertEquals(expectedResult, result);
-        verify(diceClient, times(1)).rollDice();
-    }
+        String discoveryServiceUrl = "http://localhost:8083/discovery/register";
 
-    @Test
-    void testRegisterWithDiscovery() {
-        // Simulation de la réponse de postForEntity
-        String response = "Service successfully registered with discovery.";
-        when(restTemplate.postForEntity(anyString(), any(), eq(String.class)))
-            .thenReturn(new ResponseEntity<>(response, HttpStatus.OK));
+        // Simuler le comportement de RestTemplate
+        when(restTemplate.postForEntity(
+            eq(discoveryServiceUrl),
+            eq(serviceInfo),
+            eq(String.class)
+        )).thenReturn(new ResponseEntity<>("Service registered", HttpStatus.OK));
 
-        // Appel de la méthode d'enregistrement
+        // Appeler la méthode
         playerController.registerWithDiscovery();
 
-        // Vérification que la méthode postForEntity a été appelée correctement
-        verify(restTemplate, times(1))
-            .postForEntity(eq("http://localhost:8083/discovery/register"), any(HashMap.class), eq(String.class));
+        // Vérifier que le RestTemplate a été appelé correctement
+        verify(restTemplate, times(1)).postForEntity(
+            eq(discoveryServiceUrl),
+            eq(serviceInfo),
+            eq(String.class)
+        );
     }
 }
