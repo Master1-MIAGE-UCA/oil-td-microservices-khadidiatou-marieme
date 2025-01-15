@@ -16,7 +16,6 @@ import java.util.Arrays;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
 public class PlayerControllerIntegrationTest {
 
     private MockMvc mockMvc;
