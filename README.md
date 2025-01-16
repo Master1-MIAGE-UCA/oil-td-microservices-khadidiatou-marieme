@@ -100,5 +100,5 @@ Chaque service s'enregistre auprès du *Discovery Service* pour être découvert
 ## Instructions pour Exécuter les Tests
 - 1. Se positionner sur le dossier du service à tester
 - 2. Executer la commande : mvn test
-g
+
 
