@@ -2,14 +2,12 @@ package com.example.discovery;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,16 +68,10 @@ public class DiscoveryControllerTest {
                 .content("{\"name\":\"oldService\", \"url\":\"http://localhost:8082\"}"))
             .andExpect(status().isOk());
 
-        // Simuler l'attente de nettoyage des anciens services
-        // Note: Vous devrez peut-être ajuster le temps d'attente ou simuler le comportement
-        // en utilisant une approche différente, comme un mock ou une injection de dépendance.
-
-        // Vérifiez que le service est toujours là
         mockMvc.perform(get("/discovery/services"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.oldService").value("http://localhost:8082"));
 
-        // Attendez plus de 60 minutes ici pour le test (peut-être en utilisant un planificateur simulé)
-        // Cela nécessiterait un ajustement dans le code de test pour simuler le passage du temps
+
     }
 }

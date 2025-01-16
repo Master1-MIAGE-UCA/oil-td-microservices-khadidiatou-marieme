@@ -12,7 +12,6 @@ public interface DiceClient {
     @GetMapping("/dice/rollDice")
     List<Integer> rollDice();
 
-    @GetMapping ("dice/rollDices/{X}")
+    @GetMapping("/dice/rollDices/{X}")
     int rollDices(@PathVariable("X") int X);
-
 }

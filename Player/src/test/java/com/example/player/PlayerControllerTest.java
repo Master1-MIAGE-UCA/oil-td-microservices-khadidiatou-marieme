@@ -8,13 +8,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PlayerControllerTest {
@@ -37,20 +33,30 @@ public class PlayerControllerTest {
 
         String discoveryServiceUrl = "http://localhost:8083/discovery/register";
 
-        // Simuler le comportement de RestTemplate
-        when(restTemplate.postForEntity(
-            eq(discoveryServiceUrl),
-            eq(serviceInfo),
-            eq(String.class)
-        )).thenReturn(new ResponseEntity<>("Service registered", HttpStatus.OK));
+        when(restTemplate.postForEntity(eq(discoveryServiceUrl), eq(serviceInfo), eq(String.class)))
+            .thenReturn(new ResponseEntity<>("Service registered", HttpStatus.OK));
 
-        // Appeler la méthode
         playerController.registerWithDiscovery();
 
-        // Vérifier que le RestTemplate a été appelé correctement
         verify(restTemplate, times(1)).postForEntity(
             eq(discoveryServiceUrl),
             eq(serviceInfo),
+            eq(String.class)
+        );
+    }
+
+    @Test
+    public void testRegisterWithDiscoveryWhenFailure() {
+        when(restTemplate.postForEntity(eq("http://localhost:8083/discovery/register"),
+            eq(Map.of("name", "player", "url", "http://localhost:8082")),
+            eq(String.class)))
+            .thenReturn(new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST));
+
+        playerController.registerWithDiscovery();
+
+        verify(restTemplate, times(1)).postForEntity(
+            eq("http://localhost:8083/discovery/register"),
+            eq(Map.of("name", "player", "url", "http://localhost:8082")),
             eq(String.class)
         );
     }

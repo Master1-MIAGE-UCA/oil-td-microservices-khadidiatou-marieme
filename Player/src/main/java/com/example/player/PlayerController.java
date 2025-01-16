@@ -14,6 +14,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/player")
 public class PlayerController {
+
     private final DiceClient diceClient;
     private final RestTemplate restTemplate;
 
@@ -25,14 +26,18 @@ public class PlayerController {
 
     @GetMapping("/rollDice")
     public List<Integer> rollDice() {
-        return diceClient.rollDice();
+        List<Integer> result = diceClient.rollDice();
+        System.out.println("Rolled Dice: " + result);
+        return result;
     }
+
 
     @PostConstruct
     public void registerWithDiscovery() {
         Map<String, String> serviceInfo = new HashMap<>();
         serviceInfo.put("name", "player");
         serviceInfo.put("url", "http://localhost:8082");
+
         String discoveryServiceUrl = "http://localhost:8083/discovery/register";
         try {
             restTemplate.postForEntity(discoveryServiceUrl, serviceInfo, String.class);
